@@ -5,19 +5,38 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class utilisateur extends Authenticatable
+class Utilisateur extends Authenticatable
 {
     use HasFactory, Notifiable;
+    protected $table = 'utilisateurs';
 
-    protected $fillable = ['nom', 'email', 'password', 'role_id'];
+    protected $fillable = ['id','username', 'password','firstname','lastname','gender','phone','address', 'role', 'image'];
 
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
+    protected $hidden = ['password'];
 
     public function ressortissant()
     {
-        return $this->hasOne(Ressortissant::class);
+        return $this->hasOne(Ressortissant::class, 'userId');
     }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isRessortissant()
+    {
+        return $this->role === 'ressortissant';
+    }
+
+    public function isFinancier()
+    {
+        return $this->role === 'financier';
+    }
+
+    public function isCaissier()
+    {
+        return $this->role === 'caissier';
+    }
+
 }

@@ -3,31 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - CCIN</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Connexion - CCIN</title>
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
 </head>
-<body class="flex items-center justify-center min-h-screen bg-gradient-to-b from-purple-900 to-black">
-    <div class="bg-gradient-to-b from-blue-500 to-orange-500 p-8 rounded-2xl shadow-lg w-80 text-center text-white">
-    <img src="{{ asset('images/CCIN.jpeg') }}" alt="CCIN Logo" class="w-20 mx-auto mb-4"> 
-        <h2 class="text-2xl font-semibold mb-6">Se Connecter</h2>
-        
-        <form action="{{ route('login') }}" method="POST">
+<body style="background-color: #e5e5e5;">
+    <div class="container">
+        <!-- Début du conteneur principal -->
+        <form action="{{ route('authentification') }}" method="post" class="conteneur card d-flex flex-row mx-auto">
             @csrf
-            <div class="mb-4">
-                <label class="block text-left">Nom d'utilisateur</label>
-                <input type="text" name="nom" class="w-full mt-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full border-none outline-none focus:ring-2 focus:ring-purple-400" required>
+            <!-- Début du formulaire de connexion -->
+            <div class="col-12 col-lg-6 p-4 d-flex flex-column">
+                <div class="row text-center">
+                    <h2>Connexion</h2>
+                    <label>Salut, entrez vos coordonnées pour vous connecter</label>
+                </div>
+
+                <!-- Affichage des erreurs générales -->
+                @if ($errors->has('login'))
+                    <div class="alert alert-danger text-center mt-3">
+                        {{ $errors->first('login') }}
+                    </div>
+                @endif
+
+                <div class="mt-4">
+                    <label for="InputEmail" class="form-label">Nom d'utilisateur</label>
+                    <input type="text" class="form-control" id="InputEmail" name="username" placeholder="Nom d'utilisateur" value="{{ old('username') }}" required>
+                    <!-- Affichage de l'erreur pour le champ username -->
+                </div>
+
+                <div class="mb-2 mt-4">
+                    <label for="InputPassword" class="form-label">Mot de passe</label>
+                    <input type="password" class="form-control" id="InputPassword" name="password" placeholder="Mot de Passe" required>
+                    <!-- Affichage de l'erreur pour le champ password -->
+                </div>
+
+                <input type="submit" name="submit" class="btn btn-bleu text-white my-4" value="Se connecter">
+                <!-- Bouton pour soumettre le formulaire -->
             </div>
 
-            <div class="mb-4">
-                <label class="block text-left">Mot de passe</label>
-                <input type="password" name="password" class="w-full mt-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-full border-none outline-none focus:ring-2 focus:ring-purple-400" required>
+            <div class="col d-none d-md-inline-flex">
+                <div class="image-connexion">
+                    <div class="image1">
+                        <div class="d-flex flex-column">
+                            <img width="45%" height="50%" class="img-logo" src="/images/logoccin.jpg" alt="">
+                            <label class="form-label fs-5 mt-4 text-center px-4" style="color:#4d5961">
+                                Chambre de Commerce et d'Industrie du Niger
+                            </label>
+                            <!-- Image d'illustration pour la connexion -->
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-orange-400 hover:from-blue-600 hover:to-orange-500 text-white font-bold py-2 rounded-full mt-4 font-semibold">Se Connecter</button>
         </form>
-
-
-       
     </div>
 </body>
 </html>

@@ -4,11 +4,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class typeCotisation extends Model
+class TypeCotisation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom', 'montant_fixe'];
+    protected $fillable = ['id','name','description','montant_fixe'];
 
     public function cotisations()
     {
