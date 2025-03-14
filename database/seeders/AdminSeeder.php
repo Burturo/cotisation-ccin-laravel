@@ -20,6 +20,7 @@ class AdminSeeder extends Seeder
                 'address' => 'Administration centrale',
                 'role' => 'admin',
                 'image' => null, 
+                'first_login' => false, 
             ]);
         }
     }

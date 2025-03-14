@@ -158,16 +158,16 @@
   <div class="card p-3 card-table">
     <div class="d-flex justify-content-between mb-2">
       <div class="d-flex">
-        <h4>Liste des utilisateurs</h4>
+        <h4>Liste des ressortissants</h4>
       </div>
       <div>
-        <a type="button" class="btn btn-add" href="{{ route('admin.utilisateurs.ajouter') }}">
+        <a type="button" class="btn btn-add" href="{{ route('financier.ressortissants.ajouter') }}">
           <i class="fa-solid fa-plus"></i> Ajouter
         </a>
       </div>
     </div>
     <div class="table-container px-2">
-      <table id="attribution-sold-datatable" class="display table ">
+    <table id="attribution-sold-datatable" class="display table ">
             <thead>
               <tr>
                   <th>
@@ -177,46 +177,51 @@
                       Nom & Prénom
                   </th>
                   <th>
-                      Téléphone
-                  </th>
-                  <th>
-                      Genre
-                  </th>
-                  
-                  <th>
                       Nom d'utilisateur
                   </th>
                   <th>
-                      Rôle
+                      Titre1 & Titre2
                   </th>
+                  <th>
+                    Raison Sociale
+                  </th>
+                  <th>
+                  Forme Juridique
+                  </th>
+                  <th>
+                  Secteur d'Activité
+                  </th>
+
                   <th>
                       Action
                   </th>
               </tr>
             </thead>
             <tbody>
-                @foreach ($utilisateurs as $key => $utilisateur)
+                @foreach ($ressortissants  as $key => $ressortissant)
                     <tr class="fw-medium">
                         <td>#{{ $key + 1 }}</td>
-                        <td>{{ $utilisateur->firstname }} {{ $utilisateur->lastname }}</td>
-                        <td>{{ ucfirst($utilisateur->phone) }}</td>
-                        <td>{{ ucfirst($utilisateur->gender) }}</td>
-                        <td>{{ ucfirst($utilisateur->username) }}</td>
-                        <td>{{ ucfirst($utilisateur->role) }}</td>
+                        <td>{{ $ressortissant->firstname }} {{ $ressortissant->lastname }}</td>
+                        <td>{{ ucfirst($ressortissant->username ) }}</td>
+                        <td>{{ $ressortissant->titre1  }} {{ $ressortissant->titre2  }}</td>
+                        <td>{{ ucfirst($ressortissant->raisonSociale ) }}</td>
+                        <td>{{ ucfirst($ressortissant->formeJuridique ) }}</td>
+                        <td>{{ ucfirst($ressortissant->secteurActivite ) }}</td>
+                        
                         <td>
                             <div class="d-flex align-items-center gap-2">
                             <button class="btn btn-icon btn-icon-main voir-details" 
                                     data-bs-toggle="modal" 
-                                    data-bs-target="{{ $utilisateur->role == 'ressortissant' ? '#modalDetailsRessortissant' : '#modalDetailsUtilisateur' }}"
-                                    data-id="{{ $utilisateur->id }}">
+                                    data-bs-target="#modalDetailsRessortissant"
+                                    data-id="{{ $ressortissant->id }}">
                                 <i class="fa fa-eye"></i>
                             </button>
-                                <a href="{{ route('admin.utilisateurs.edit', $utilisateur->id) }}" class="btn btn-icon btn-icon-success">
+                                <a href="{{ route('financier.ressortissants.edit', $ressortissant->id) }}" class="btn btn-icon btn-icon-success">
                                     <i class="fa fa-solid fa-pen-to-square"></i>
                                 </a>
                                 <button class="btn btn-icon btn-icon-secondary" 
                                     data-bs-toggle="modal" data-bs-target="#confirmationModal" 
-                                    onclick="setDeleteAction('{{ route('admin.utilisateurs.destroy', $utilisateur->id) }}')">
+                                    onclick="setDeleteAction('{{ route('financier.ressortissants.destroy', $ressortissant->id) }}')">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -339,49 +344,6 @@
         </div>
     </div>
 
-    <div class="modal custom-modal fade" id="modalDetailsUtilisateur" tabindex="-1" aria-labelledby="modalDetailsUtilisateurLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalDetailsUtilisateurLabel">Détails de l'utilisateur</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <!-- Image à gauche (4 colonnes) -->
-                        <div class="col-4 text-center mb-3">
-                            <img src="" alt="Photo de l'utilisateur" class="img-thumbnail detailImage" width="150">
-                        </div>
-                        <div class="col-7 text-start">
-                            <div class="d-flex justify-content-between mb-3">
-                                <strong>Nom & Prénom :</strong> <span class="detailNom"></span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-3">
-                                <strong>Téléphone :</strong> <span class="detailTelephone"></span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-3">
-                                <strong>Genre :</strong> <span class="detailGenre"></span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-3">
-                                <strong>Adresse :</strong> <span class="detailAddress"></span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-3">
-                                <strong>Nom d'utilisateur :</strong> <span class="detailUsername"></span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-3">
-                                <strong>Rôle :</strong> <span class="detailRole"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal de confirmation de suppression -->
     <div class="modal custom-modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -391,7 +353,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.
+                    Êtes-vous sûr de vouloir supprimer cet ressortissant ? Cette action est irréversible.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
@@ -413,51 +375,48 @@
                 document.getElementById('deleteForm').action = url;
             }
             document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll(".voir-details").forEach(button => {
-        button.addEventListener("click", function() {
-            var userId = this.getAttribute("data-id");
+                document.querySelectorAll(".voir-details").forEach(button => {
+                    button.addEventListener("click", function() {
+                        var userId = this.getAttribute("data-id");
 
-            // Requête AJAX pour récupérer les détails de l'utilisateur
-            fetch(`/admin/utilisateurs/${userId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        alert("Utilisateur non trouvé !");
-                        return;
-                    }
+                        // Requête AJAX pour récupérer les détails de l'utilisateur
+                        fetch(`/financier/ressortissants/${userId}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.message) {
+                                    alert("Ressortissant non trouvé !");
+                                    return;
+                                }
 
-                    document.querySelectorAll(".detailNom").forEach(el => el.textContent = data.firstname + " " + data.lastname);
-                    document.querySelectorAll(".detailTelephone").forEach(el => el.textContent = data.phone);
-                    document.querySelectorAll(".detailGenre").forEach(el => el.textContent = data.gender);
-                    document.querySelectorAll(".detailAddress").forEach(el => el.textContent = data.address);
-                    document.querySelectorAll(".detailUsername").forEach(el => el.textContent = data.username);
-                    document.querySelectorAll(".detailRole").forEach(el => el.textContent = data.role);
+                                // Informations de l'utilisateur
+                                document.querySelectorAll(".detailNom").forEach(el => el.textContent = data.firstname + " " + data.lastname);
+                                document.querySelectorAll(".detailTelephone").forEach(el => el.textContent = data.phone);
+                                document.querySelectorAll(".detailGenre").forEach(el => el.textContent = data.gender);
+                                document.querySelectorAll(".detailAddress").forEach(el => el.textContent = data.address);
+                                document.querySelectorAll(".detailUsername").forEach(el => el.textContent = data.username);
+                                document.querySelectorAll(".detailRole").forEach(el => el.textContent = data.role);
+                                document.querySelectorAll(".detailImage").forEach(img => img.src = data.image);
 
-                    console.log("========================", data.role);
-                    document.querySelectorAll(".detailImage").forEach(img => {img.src = data.image;});
-
-                    // Informations du ressortissant (si présentes)
-                    if (data.ressortissant) {
-                        document.getElementById("detailTitre1").textContent = data.ressortissant.titre1 || "Non renseigné";
-                        document.getElementById("detailTitre2").textContent = data.ressortissant.titre2 || "Non renseigné";
-                        document.getElementById("detailRaisonSociale").textContent = data.ressortissant.raisonSociale || "Non renseigné";
-                        document.getElementById("detailFormeJuridique").textContent = data.ressortissant.formeJuridique || "Non renseigné";
-                        document.getElementById("detailRccm").textContent = data.ressortissant.rccm || "Non renseigné";
-                        document.getElementById("detailCapitalSocial").textContent = data.ressortissant.capitalSociale || "Non renseigné";
-                        document.getElementById("detailCotisationAnnuelle").textContent = data.ressortissant.cotisationAnnuelle || "Non renseigné";
-                        document.getElementById("detailSecteurActivite").textContent = data.ressortissant.secteurActivite || "Non renseigné";
-                        document.getElementById("detailPromoteur").textContent = data.ressortissant.promoteur || "Non renseigné";
-                        document.getElementById("detailDureeCreation").textContent = data.ressortissant.dureeCreation || "Non renseigné";
-                        document.getElementById("detailLocaliteRegion").textContent = data.ressortissant.localiteEtRegion || "Non renseigné";
-                    }
-                })
-                .catch(error => {
-                    console.error("Erreur lors de la récupération des détails :", error);
-                    alert("Une erreur s'est produite lors de la récupération des détails !");
+                                // Vérification et affichage des informations du ressortissant
+                                document.getElementById("detailTitre1").textContent = data.titre1 || "Non renseigné";
+                                document.getElementById("detailTitre2").textContent = data.titre2 || "Non renseigné";
+                                document.getElementById("detailRaisonSociale").textContent = data.raisonSociale || "Non renseigné";
+                                document.getElementById("detailFormeJuridique").textContent = data.formeJuridique || "Non renseigné";
+                                document.getElementById("detailRccm").textContent = data.rccm || "Non renseigné";
+                                document.getElementById("detailCapitalSocial").textContent = data.capitalSociale || "Non renseigné";
+                                document.getElementById("detailCotisationAnnuelle").textContent = data.cotisationAnnuelle || "Non renseigné";
+                                document.getElementById("detailSecteurActivite").textContent = data.secteurActivite || "Non renseigné";
+                                document.getElementById("detailPromoteur").textContent = data.promoteur || "Non renseigné";
+                                document.getElementById("detailDureeCreation").textContent = data.dureeCreation || "Non renseigné";
+                                document.getElementById("detailLocaliteRegion").textContent = data.localiteEtRegion || "Non renseigné";
+                            })
+                            .catch(error => {
+                                console.error("Erreur lors de la récupération des détails :", error);
+                                alert("Une erreur s'est produite lors de la récupération des détails !");
+                            });
+                    });
                 });
-        });
-    });
-});
+            });
 
 
         </script>

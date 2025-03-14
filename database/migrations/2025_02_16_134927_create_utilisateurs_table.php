@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('address')->nullable();
             $table->enum('role', ['admin', 'ressortissant', 'caissier', 'financier'])->default('ressortissant');
             $table->string('image')->nullable();
+            $table->boolean('first_login')->default(true);
             $table->timestamps();
         });
  

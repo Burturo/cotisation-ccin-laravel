@@ -250,6 +250,16 @@
   background-color: #ccc;
   }
   
+.custom-modal .modal-header{
+    border-color: #cbd1e6;
+}
 
+.custom-modal .modal-title{
+    color: #045e9e;
+}
 
-    
+.custom-modal .modal-content{
+    border: none;
+    color: #045e9e;
+    border-radius: 10px;
+}

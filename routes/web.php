@@ -12,6 +12,9 @@ Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('authentification');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/resetPassword', [AuthController::class, 'showResetPasswordForm'])->name('password.reset');
+Route::post('/resetPassword', [AuthController::class, 'resetPassword'])->name('password.update');
+
 Route::middleware(['auth'])->group(function () {
     // Dashboard pour chaque rôle
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
@@ -29,6 +32,15 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/utilisateurs/{id}', [AdminController::class, 'destroy'])->name('admin.utilisateurs.destroy');
 
 
+
+    // Route pour la gestion des ressortissants uniquement pour les finaciers
+    Route::get('/financier/ressortissants', [FinancierController::class, 'ressortissants'])->name('financier.ressortissants');
+    Route::get('/financier/ressortissants/ajouter', [FinancierController::class, 'addRessortissant'])->name('financier.ressortissants.ajouter');
+    Route::post('/financier/ressortissants/store', [FinancierController::class, 'store'])->name('financier.ressortissants.store');
+    Route::get('/financier/ressortissants/{id}', [FinancierController::class, 'getRessortissant']);
+    Route::get('/financier/ressortissants/{id}/modification', [FinancierController::class, 'editRessortissant'])->name('financier.ressortissants.edit');
+    Route::post('/financier/ressortissants/{id}', [FinancierController::class, 'update'])->name('financier.ressortissants.update');
+    Route::delete('/financier/ressortissants/{id}', [FinancierController::class, 'destroy'])->name('financier.ressortissants.destroy');
 
     
 });

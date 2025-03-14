@@ -14,14 +14,16 @@ return new class extends Migration
         Schema::create('ressortissants', function (Blueprint $table) {
             $table->id();
             $table->string('titre1');
-            $table->string('titre2')->nullable();
-            $table->string('raisonSocial');
-            $table->string('formJuri');
+            $table->string('titre2');
+            $table->string('raisonSociale');
+            $table->string('formeJuridique');
             $table->string('rccm')->unique();
-            $table->decimal('capitalSocial', 15, 2);
-            $table->string('secteurActi');
-            $table->string('promoteur');
-            $table->integer('dureeCrea');
+            $table->decimal('capitalSociale', 25, 2)->nullable(); // Permet null
+            $table->decimal('cotisationAnnuelle', 25, 2)->nullable(); // Permet null
+            $table->string('secteurActivite');
+            $table->string('promoteur')->nullable(); // Permet null
+            $table->string('dureeCreation')->nullable();
+            $table->string('localiteEtRegion');
             $table->foreignId('userId')->constrained('utilisateurs')->onDelete('cascade');
             $table->timestamps();
         });

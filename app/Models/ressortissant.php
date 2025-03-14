@@ -9,7 +9,7 @@ class Ressortissant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['titre1', 'titre2','raisonSocial', 'formJuri','rccm', 'capitalSocial','secteurActi', 'promoteur', 'dureeCrea', 'userId'];
+    protected $fillable = ['titre1', 'titre2','raisonSociale', 'formeJuridique','rccm', 'capitalSociale','cotisationAnnuelle','secteurActivite', 'promoteur', 'dureeCreation', 'localiteEtRegion', 'userId'];
 
     public function utilisateur()
     {

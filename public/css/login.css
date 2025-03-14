@@ -14,6 +14,12 @@ body{
     background-color: #f7f7f7  !important;
     border: 2px solid #dadada !important;
 }
+.conteneur-resetPassword{
+    width: 32%;
+    height: auto;
+    background-color: #f7f7f7  !important;
+    border: 2px solid #dadada !important;
+}
 .conteneur-inscription{
     width: 65%;
     height: auto;
@@ -76,4 +82,8 @@ color: #E4740D; /* Couleur lors du survol */
 .alert {
     padding: 0.5rem 0.5rem !important;
     margin-bottom: 0px !important;
+}
+.resetPassword-image{
+    height: 160px;
+    width: 200px;
 }

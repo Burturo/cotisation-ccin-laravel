@@ -6,12 +6,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\Utilisateur;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function showLoginForm()
     {
         return view('login');
+    }
+
+    public function showResetPasswordForm(Request $request)
+    {
+        $username = $request->query('username');
+        return view('resetPassword', compact('username'));
     }
 
     public function logout(Request $request)
@@ -24,6 +31,26 @@ class AuthController extends Controller
         return redirect('/'); // Redirige vers la page d'accueil ou une autre page
     }
 
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $utilisateur = Utilisateur::where('username', $request->username)->first();
+
+        if ($utilisateur) {
+            $utilisateur->password = Hash::make($request->password);
+            $utilisateur->first_login = false; // Désactiver le flag après la réinitialisation
+            $utilisateur->save();
+
+            return redirect()->route('login')->with('success', 'Mot de passe mis à jour avec succès.');
+        }
+
+        return redirect()->route('login')->withErrors(['error' => 'Utilisateur non trouvé.']);
+    }
+
     public function login(Request $request)
     {
         // Validation des champs requis
@@ -31,6 +58,14 @@ class AuthController extends Controller
             'username' => 'required|string',
             'password' => 'required|string'
         ]);
+
+        // Vérifier si l'utilisateur existe
+        $utilisateur = Utilisateur::where('username', $request->username)->first();
+        // Vérifier si c'est la première connexion
+        if ($utilisateur->first_login) {
+            return redirect()->route('password.reset', ['username' => $utilisateur->username])
+                ->with('info', 'Veuillez réinitialiser votre mot de passe.');
+        }
 
         // Tentative d'authentification
         if (Auth::attempt($credentials)) {
@@ -40,6 +75,8 @@ class AuthController extends Controller
             if ($user) {
                 // Stocker l'utilisateur dans la session si nécessaire
                 session()->put('user', $user);
+
+                
 
                 // Redirection selon le rôle de l'utilisateur
                 return match ($user->role) {

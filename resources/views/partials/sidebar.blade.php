@@ -43,6 +43,31 @@
         </li>
         @endif
 
+        <!-- Si l'utilisateur est finiancier, on montre le menu des ressortissants -->
+        @if(auth()->user()->role === 'financier')
+        <li class="item">
+            <div class="iocn-link">
+                <a href="#">
+                <i class="fa-solid fa-users fs-5"></i>
+                <span class="link_name">Gestion des ressortissants</span>
+                </a>
+                <i class="fa-solid fa-angle-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li class="{{ request()->is('financier/utilisateurs') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('financier.ressortissants') }}">
+                        <i class="fa fa-paper-plane sub-menu-i"></i>Ressortissants
+                    </a>
+                </li>
+                <li class="{{ request()->is('financier/utilisateurs/ajouter') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('financier.ressortissants.ajouter') }}">
+                        <i class="fa fa-paper-plane sub-menu-i"></i>Ajouter un ressortissant
+                    </a>
+                </li>
+            </ul>
+        </li>
+        @endif
+
 
         
         <li class="footer">

@@ -3,7 +3,7 @@
 @section('title', 'Utilisateurs')
 
 @section('content')
-<form method="POST" action="{{ route('admin.utilisateurs.store') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ route('financier.ressortissants.store') }}" enctype="multipart/form-data">
     @csrf
     <div class="container card d-flex flex-md-row flex-column justify-content-center p-2 my-2" style="height: 83vh;margin-top: 45px !important;">
         <div class="col-12 col-md-3">
@@ -67,20 +67,9 @@
                                 </div>
                             </div>
                             <h4 class="title-header mb-0 mt-4">Informations du compte</h4>
-                            <div class="d-flex flex-md-row flex-column justify-content-between">
-                                <div class="col-12 col-md-5">
-                                    <label for="username" class="form-label">Nom d'utilisateur :</label>
-                                    <input type="text" id="username" name="username" class="form-control f-input" placeholder="Entrez le nom d'utilisateur" required />
-                                </div>
-                                <div class="col-12 col-md-5">
-                                    <label for="role" class="form-label">Rôle :</label>
-                                    <select id="role" name="role" class="form-select" required>
-                                        <option selected disabled>Sélectionner un rôle...</option>
-                                        <option value="ressortissant">Ressortissant</option>
-                                        <option value="caissier">Caissier</option>
-                                        <option value="financier">Financier</option>
-                                    </select>
-                                </div>
+                            <div class="col-12">
+                                <label for="username" class="form-label">Nom d'utilisateur :</label>
+                                <input type="text" id="username" name="username" class="form-control f-input" placeholder="Entrez le nom d'utilisateur" required />
                             </div>
 
                             <div class="d-flex flex-md-row flex-column justify-content-between">
@@ -94,26 +83,25 @@
                                     <input type="password" id="password_confirmation" name="password_confirmation" class="form-control f-input" placeholder="Confirmer le mot de passe" required />
                                 </div>
                             </div>
-                            <div id="ressortissantFields" class="row g-2 mb-3" style="display: none;">
                                 <h4 class="title-header mb-0 mt-4">Informations du ressortissant</h4>
                                 <div class="d-flex flex-md-row flex-column justify-content-between">
                                     <div class="col-12 col-md-5">
                                         <label for="titre1" class="form-label">Titre 1</label>
-                                        <input type="text" id="titre1" name="titre1" class="form-control f-input" placeholder="Entrez le titre 1"/>
+                                        <input type="text" id="titre1" name="titre1" class="form-control f-input" required placeholder="Entrez le titre 1"/>
                                     </div>
                                     <div class="col-12 col-md-5">
                                         <label for="titre2" class="form-label">Titre 2</label>
-                                        <input type="text" id="titre2" name="titre2" class="form-control f-input" placeholder="Entrez le titre 2"/>
+                                        <input type="text" id="titre2" name="titre2" class="form-control f-input" required placeholder="Entrez le titre 2"/>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-md-row flex-column justify-content-between">
                                     <div class="col-12 col-md-5">
                                         <label for="raisonSociale" class="form-label">Raison Sociale</label>
-                                        <input type="text" id="raisonSociale" name="raisonSociale" class="form-control f-input" placeholder="Entrez la raison sociale"/>
+                                        <input type="text" id="raisonSociale" name="raisonSociale" class="form-control f-input" required placeholder="Entrez la raison sociale"/>
                                     </div>
                                     <div class="col-12 col-md-5">
                                         <label for="formeJuridique" class="form-label">Forme Juridique</label>
-                                        <select id="formeJuridique" name="formeJuridique" class="form-select" placeholder="Entrez la forme juridique">
+                                        <select id="formeJuridique" name="formeJuridique" class="form-select" required placeholder="Entrez la forme juridique">
                                             <option selected disabled>Sélectionner la forme juridique...</option>
                                             <option value="Societés anonymes (S.A)">Societés anonymes (S.A)</option>
                                             <option value="Societés à responsabilité limitée (S.A.R.L)">Societés à responsabilité limitée (S.A.R.L)</option>
@@ -124,7 +112,7 @@
                                 </div>
                                 <div class="col-12">
                                     <label for="rccm" class="form-label">RCCM</label>
-                                    <textarea id="rccm" name="rccm" class="form-control f-input" placeholder="Entrez le rccm" rows="3"></textarea>
+                                    <textarea id="rccm" name="rccm" class="form-control f-input" placeholder="Entrez le rccm" required rows="3"></textarea>
                                 </div>
                                 <div class="d-flex flex-md-row flex-column justify-content-between">
                                     <div class="col-12 col-md-5">
@@ -133,7 +121,7 @@
                                     </div>
                                     <div class="col-12 col-md-5">
                                         <label for="secteurActivite" class="form-label">Secteur d'activité</label>
-                                        <input type="text" id="secteurActivite" name="secteurActivite" class="form-control f-input" placeholder="Entrez le secteur d'activité"/>
+                                        <input type="text" id="secteurActivite" name="secteurActivite" class="form-control f-input" required placeholder="Entrez le secteur d'activité"/>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-md-row flex-column justify-content-between">
@@ -146,23 +134,22 @@
                                         <input type="number" id="cotisationAnnuelle" name="cotisationAnnuelle" class="form-control f-input" placeholder="Entrez le cotisation annuelle" />
                                     </div>
                                 </div>
-                                <div class="d-flex flex-md-row flex-column justify-content-between">
+                                <div class="d-flex flex-md-row flex-column justify-content-between mb-3">
                                     <div class="col-12 col-md-5">
                                         <label for="dureeCreation" class="form-label">Durée de création</label>
                                         <input type="text" id="dureeCreation" name="dureeCreation" class="form-control f-input" placeholder="Entrez la durée de création" />
                                     </div>
                                     <div class="col-12 col-md-5">
                                         <label for="localiteEtRegion" class="form-label">Localite et Région</label>
-                                        <input type="text" id="localiteEtRegion" name="localiteEtRegion" class="form-control f-input" placeholder="Entrez la localite et région"/>
+                                        <input type="text" id="localiteEtRegion" name="localiteEtRegion" class="form-control f-input" required placeholder="Entrez la localite et région"/>
                                     </div>
                                     
                                 </div>
-                            </div>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-end mt-3">
-                    <a href="{{ route('admin.utilisateurs') }}" class="btn button-outline" style="margin-right: 20px;">Annuler</a>
+                    <a href="{{ route('financier.ressortissants') }}" class="btn button-outline" style="margin-right: 20px;">Annuler</a>
                         <button class="btn button" type="submit">
                             Ajouter
                         </button>
@@ -191,39 +178,6 @@
         }
     }
 
-    document.addEventListener("DOMContentLoaded", function () { 
-        let roleSelect = document.getElementById("role");
-        let ressortissantFields = document.getElementById("ressortissantFields");
-
-        // Liste des IDs des champs requis
-        let requiredFields = [
-            "titre1", "titre2", "raisonSociale", "formeJuridique", 
-            "rccm", "secteurActivite", "localiteEtRegion"
-        ];
-
-        function toggleRessortissantFields() {
-            if (roleSelect.value === "ressortissant") {
-                ressortissantFields.style.display = "block";
-                // Ajouter l'attribut required aux champs requis
-                requiredFields.forEach(id => {
-                    let field = document.getElementById(id);
-                    if (field) field.setAttribute("required", "required");
-                });
-            } else {
-                ressortissantFields.style.display = "none";
-                // Supprimer l'attribut required des champs requis
-                requiredFields.forEach(id => {
-                    let field = document.getElementById(id);
-                    if (field) field.removeAttribute("required");
-                });
-            }
-        }
-
-        roleSelect.addEventListener("change", toggleRessortissantFields);
-
-        // Vérification initiale au chargement de la page
-        toggleRessortissantFields();
-    });
 
 
 </script>
