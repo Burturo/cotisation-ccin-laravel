@@ -377,10 +377,10 @@
             document.addEventListener("DOMContentLoaded", function() {
                 document.querySelectorAll(".voir-details").forEach(button => {
                     button.addEventListener("click", function() {
-                        var userId = this.getAttribute("data-id");
+                        var ressortissantId = this.getAttribute("data-id");
 
                         // Requête AJAX pour récupérer les détails de l'utilisateur
-                        fetch(`/financier/ressortissants/${userId}`)
+                        fetch(`/financier/ressortissants/${ressortissantId}`)
                             .then(response => response.json())
                             .then(data => {
                                 if (data.message) {
