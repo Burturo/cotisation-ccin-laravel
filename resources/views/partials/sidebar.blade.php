@@ -7,7 +7,10 @@
     <span class="logo_name">Chambre de Commerce et d'Industrie du Niger</span>
 
     <div class="profile mt-4 p-2">
-        <img height="32px" class="img-profile" src="/images/img_profil.jpg"></i>
+        @if(Auth::check())
+            <img height="32px"  src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('images/profile.png') }}" 
+                alt="Photo de profil" class="img-profile">
+        @endif
         <span class="profile_name ms-3">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</span>
         <i class="fa-solid ms-5  fa-xmark btn-ferme" type="button"></i>
     </div>
