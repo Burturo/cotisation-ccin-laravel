@@ -11,7 +11,9 @@ class TypeCotisationController extends Controller
      */
     public function index()
     {
-        //
+        //$types = TypeCotisation::all();
+
+        return view('financier.typecotisations.index');
     }
 
     /**

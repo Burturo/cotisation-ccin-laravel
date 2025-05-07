@@ -39,5 +39,114 @@
                 $('.table').DataTable();
             });
         </script>
+
+
+
+
+<!-- Modale pour afficher les informations du profil -->
+<div class="modal custom-modal fade" id="profileModal" data-bs-backdrop="static" data-bs-keyboard="false"  tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="profileModalLabel">Profil de l'utilisateur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if(Auth::check())
+                    <div class="row">
+                        <!-- Image à gauche (4 colonnes) -->
+                        <div class="col-4 text-center mb-3">
+                            <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('images/profile.png') }}" 
+                                 alt="Photo de l'utilisateur" class="img-thumbnail detailImage" width="150">
+                        </div>
+                        <div class="col-7 text-start">
+                            <div class="d-flex justify-content-between mb-3">
+                                <strong>Nom & Prénom :</strong> 
+                                <span class="detailNom">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <strong>Téléphone :</strong> 
+                                <span class="detailTelephone">{{ Auth::user()->phone ?? 'Non défini' }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <strong>Genre :</strong> 
+                                <span class="detailGenre">{{ Auth::user()->gender ?? 'Non défini' }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <strong>Adresse :</strong> 
+                                <span class="detailAddress">{{ Auth::user()->address ?? 'Non défini' }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <strong>Nom d'utilisateur :</strong> 
+                                <span class="detailUsername">{{ Auth::user()->username ?? Auth::user()->email }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <strong>Rôle :</strong> 
+                                <span class="detailRole">{{ Auth::user()->role ?? 'Non défini' }}</span>
+                            </div>
+                        </div>
+                   
+                    <!-- Champs spécifiques pour les ressortissants -->
+                    @if(Auth::user()->role === 'ressortissant' && Auth::user()->ressortissant)
+                        <div id="ressortissantFields" class="row">
+                            <div class="col-7 text-start">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong >Titre 1 :</strong> 
+                                    <span class="detailTitre1">{{ Auth::user()->ressortissant->titre1 ?? 'Non défini' }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong >Titre 2 :</strong> 
+                                    <span class="detailTitre2">{{ Auth::user()->ressortissant->titre2 ?? 'Non défini' }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong >Raison Sociale :</strong> 
+                                    <span class="detailRaisonSociale">{{ Auth::user()->ressortissant->raisonSociale ?? 'Non défini' }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong >Forme Juridique :</strong> 
+                                    <span class="detailFormeJuridique">{{ Auth::user()->ressortissant->formeJuridique ?? 'Non défini' }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong >RCCM :</strong> 
+                                    <span class="detailRccm">{{ Auth::user()->ressortissant->rccm ?? 'Non défini' }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong >Capital Social :</strong> 
+                                    <span class="detailCapitalSocial">{{ Auth::user()->ressortissant->capitalSociale ?? 'Non défini' }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong >Cotisation Annuelle :</strong> 
+                                    <span class=" detailCotisationAnnuelle">{{ Auth::user()->ressortissant->cotisationAnnuelle ?? 'Non défini' }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong >Secteur d'Activité :</strong> 
+                                    <span class=" detailSecteurActivite">{{ Auth::user()->ressortissant->secteurActivite ?? 'Non défini' }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong >Promoteur :</strong> 
+                                    <span class="detailPromoteur">{{ Auth::user()->ressortissant->promoteur ?? 'Non défini' }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong >Durée de Création :</strong> 
+                                    <span class=" detailDureeCreation">{{ Auth::user()->ressortissant->dureeCreation ?? 'Non défini' }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong >Localité & Région :</strong> 
+                                    <span class="detailLocaliteRegion">{{ Auth::user()->ressortissant->localiteEtRegion ?? 'Non défini' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    @endif
+                @else
+                    <p>Utilisateur non connecté.</p>
+                @endif
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

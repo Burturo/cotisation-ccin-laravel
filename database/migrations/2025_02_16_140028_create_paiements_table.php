@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('paiements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cotisation_id')->constrained()->onDelete('cascade');
+            $table->foreignId('ressortissant_id')->constrained();
+            $table->foreignId('type_cotisation_id')->constrained()->onDelete('cascade');
             $table->decimal('montant', 10, 2);
             $table->date('date_paiement');
             $table->string('methode_paiement'); // Espèces, Virement, Mobile Money

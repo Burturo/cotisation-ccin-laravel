@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('type_cotisations', function (Blueprint $table) {
             $table->id();
             $table->string('name'); // Mensuelle, Annuelle, etc.
-            $table->decimal('montant_fixe', 10, 2);
+            $table->renameColumn('montant_fixe', 'montant', 10, 2);
             $table->text('description')->nullable();
+            $table->text('formeJuridique');
             $table->timestamps();
         });
     }

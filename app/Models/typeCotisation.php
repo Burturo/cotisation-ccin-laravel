@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class TypeCotisation extends Model
 {
     use HasFactory;
+    protected $table = 'type_cotisations';
 
-    protected $fillable = ['id','name','description','montant_fixe'];
+    protected $fillable = ['id','name','description','montant','formeJuridique'];
 
     public function cotisations()
     {

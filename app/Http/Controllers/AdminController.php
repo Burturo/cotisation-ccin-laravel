@@ -5,15 +5,52 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Utilisateur;
 use App\Models\Ressortissant;
+use App\Models\Paiement;
+use App\Models\Notification;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
     public function index()
-    {
-        return view('admin/dashboard');
+{
+    $nombreUtilisateurs = \App\Models\Utilisateur::count();
+    $nombreRessortissants = \App\Models\Ressortissant::count();
+    $nombrePaiements = \App\Models\Paiement::count();
+    // Données utilisateurs
+    $utilisateursParMois = Utilisateur::selectRaw('EXTRACT(MONTH FROM created_at) as mois, COUNT(*) as total')
+        ->groupBy('mois')
+        ->orderBy('mois')
+        ->pluck('total', 'mois');
 
-    }
+    // Données ressortissants
+    $ressortissantsParMois = Ressortissant::selectRaw('EXTRACT(MONTH FROM created_at) as mois, COUNT(*) as total')
+        ->groupBy('mois')
+        ->orderBy('mois')
+        ->pluck('total', 'mois');
+
+    // Mois 1 à 12
+    $moisLabels = collect(range(1, 12));
+    $utilisateurs = $moisLabels->map(fn($mois) => $utilisateursParMois[$mois] ?? 0);
+    $ressortissants = $moisLabels->map(fn($mois) => $ressortissantsParMois[$mois] ?? 0);
+// Notifications (par exemple, les 5 plus récentes des 7 derniers jours)
+$notifications = Notification::where('created_at', '>=', now()->subDays(7))
+->orderBy('created_at', 'desc')
+->take(5)
+->get();
+    // Retourne la vue avec les données
+    return view('admin.dashboard', [
+        'moisLabels' => $moisLabels,
+        'utilisateurs' => $utilisateurs,
+        'ressortissants' => $ressortissants,
+        'nombreUtilisateurs' => $nombreUtilisateurs,
+        'nombreRessortissants' => $nombreRessortissants,
+        'nombrePaiements' => $nombrePaiements,
+        'notifications'=>$notifications
+    ]);
+}
+    
+
     public function utilisateurs()
     {
         $utilisateurs = Utilisateur::all(); // Récupère tous les utilisateurs
@@ -292,6 +329,32 @@ class AdminController extends Controller
 
         return redirect()->route('admin.utilisateurs')->with('success', 'Utilisateur supprimé avec succès');
     }
+
+    public function dashboard()
+{
+    // Utilisateurs par mois
+    $utilisateursParMois = Utilisateur::selectRaw('EXTRACT(MONTH FROM created_at) as mois, COUNT(*) as total')
+        ->groupBy('mois')
+        ->orderBy('mois')
+        ->pluck('total', 'mois');
+
+    // Ressortissants par mois
+    $ressortissantsParMois = Ressortissant::selectRaw('EXTRACT(MONTH FROM created_at) as mois, COUNT(*) as total')
+        ->groupBy('mois')
+        ->orderBy('mois')
+        ->pluck('total', 'mois');
+
+    // On veut des mois de 1 à 12 pour compléter les mois absents
+    $moisLabels = collect(range(1, 12));
+    $utilisateurs = $moisLabels->map(fn($mois) => $utilisateursParMois[$mois] ?? 0);
+    $ressortissants = $moisLabels->map(fn($mois) => $ressortissantsParMois[$mois] ?? 0);
+
+    return view('admin.dashboard', [
+        'moisLabels' => $moisLabels,
+        'utilisateurs' => $utilisateurs,
+        'ressortissants' => $ressortissants
+    ]);
+}
 
 
 

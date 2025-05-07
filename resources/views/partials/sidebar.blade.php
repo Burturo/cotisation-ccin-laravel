@@ -6,14 +6,18 @@
     </div>
     <span class="logo_name">Chambre de Commerce et d'Industrie du Niger</span>
 
-    <div class="profile mt-4 p-2">
-        @if(Auth::check())
-            <img height="32px"  src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('images/profile.png') }}" 
-                alt="Photo de profil" class="img-profile">
-        @endif
-        <span class="profile_name ms-3">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</span>
-        <i class="fa-solid ms-5  fa-xmark btn-ferme" type="button"></i>
-    </div>
+    <div class="profile mt-4 p-2" data-bs-toggle="modal" data-bs-target="#profileModal" style="cursor: pointer;">
+    @if(Auth::check())
+        <img height="32px" src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('images/profile.png') }}" 
+             alt="Photo de profil" class="img-profile">
+    @endif
+    <span class="profile_name ms-3">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</span>
+    <i class="fa-solid ms-5 fa-xmark btn-ferme" type="button"></i>
+
+    
+</div>
+
+
     <ul class="nav-links">
         <li class="{{ request()->is(Auth::user()->role . '/dashboard') ? 'item menu active' : 'item menu' }}" >
             <a style="height: 50px;" href="{{ route(Auth::user()->role . '.dashboard') }}">
@@ -69,6 +73,128 @@
                 </li>
             </ul>
         </li>
+
+        <li class="item">
+            <div class="iocn-link">
+                <a href="#">
+                <i class="fa-solid fa-tags fs-5"></i>
+                <span class="link_name">Gestion des types de cotisation</span>
+                </a>
+                <i class="fa-solid fa-angle-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li class="{{ request()->is('financier/typecotisations') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('financier.typecotisations') }}">
+                        <i class="fa fa-paper-plane sub-menu-i"></i>Type de cotisation
+                    </a>
+                </li>
+                <li class="{{ request()->is('financier/typecotisations/ajouter') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('financier.typecotisations.ajouter') }}">
+                        <i class="fa fa-paper-plane sub-menu-i"></i>Ajouter un type de cotisation
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="item">
+            <div class="iocn-link">
+                <a href="#">
+                <i class="fa-solid fa-clipboard-list fs-5"></i>
+                <span class="link_name">Gestion des cotisations</span>
+                </a>
+                <i class="fa-solid fa-angle-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li class="{{ request()->is('financier/cotisations') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('financier.cotisations') }}">
+                        <i class="fa fa-paper-plane sub-menu-i"></i> Suivi des cotisations
+                    </a>
+                </li>
+                
+            </ul>
+        </li>
+
+        
+        <li class="item">
+            <div class="iocn-link">
+                <a href="#">
+                <i class="fa-solid fa-envelope fs-5"></i>
+                <span class="link_name">Gestion des lettres de cotisation</span>
+                </a>
+                <i class="fa-solid fa-angle-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li class="{{ request()->is('financier/lettrecotisations') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('financier.lettrecotisations.create') }}">
+                        <i class="fa fa-paper-plane sub-menu-i"></i>Envoyer une lettre
+                    </a>
+                </li>
+                <li class="{{ request()->is('financier/lettrecotisations') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('financier.lettrecotisations.index') }}">
+                        <i class="fa fa-paper-plane sub-menu-i"></i>Gérer les lettres
+                    </a>
+                    
+                </li>
+                
+            </ul>
+        </li>
+        @endif
+
+
+        <!-- Si l'utilisateur est caissier, on montre le menu des ressortissants -->
+        @if(auth()->user()->role === 'caissier')
+        <li class="item">
+            <div class="iocn-link">
+                <a href="#">
+                <i class="fa-solid fa-users fs-5"></i>
+                <span class="link_name">Gestion des ressortissants</span>
+                </a>
+                <i class="fa-solid fa-angle-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li class="{{ request()->is('caissier/utilisateurs') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('caissier.ressortissants') }}">
+                        <i class="fa fa-paper-plane sub-menu-i"></i>Ressortissants
+                    </a>
+                </li>
+                <li class="{{ request()->is('caissier/utilisateurs/ajouter') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('caissier.ressortissants.ajouter') }}">
+                        <i class="fa fa-paper-plane sub-menu-i"></i>Ajouter un ressortissant
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li class="item">
+            <div class="iocn-link">
+                <a href="#">
+                <i class="fa-solid fa-cash-register fs-5"></i>
+                <span class="link_name">Gestion des paiements</span>
+                </a>
+                <i class="fa-solid fa-angle-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li class="{{ request()->is('caissier/paiement') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('caissier.paiement.index') }}">
+                        <i class="fa fa-paper-plane sub-menu-i"></i> Enregistrement paiement
+                    </a>
+                </li>
+               
+            </ul>
+            <ul class="sub-menu">
+                <li class="{{ request()->is('caissier/paiement') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('caissier.paiement.indexPaiement') }}">
+                        <i class="fa fa-paper-plane sub-menu-i"></i> Liste des paiements
+                    </a>
+                </li>
+               
+            </ul>
+        </li>
+        @endif
+
+        
+        @if(auth()->user()->role === 'ressortissant')
+        
         @endif
 
 
@@ -91,3 +217,8 @@
         </li>
     </ul>
 </div>
+
+
+
+
+

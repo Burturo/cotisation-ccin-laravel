@@ -5,15 +5,46 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Utilisateur;
 use App\Models\Ressortissant;
+use App\Models\TypeCotisation;
+use App\Models\Cotisation;
+use App\Models\Paiement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel as ExcelFormat;
+use Illuminate\Support\Collection;
+
 
 class FinancierController extends Controller
 {
     public function index()
     {
-        return view('financier/dashboard');
+        $nombreRessortissants = \App\Models\Ressortissant::count();
+        $nombrePaiements = \App\Models\Paiement::count();
+       // Récupère les paiements par mois
+    $paiementsParMois = Paiement::selectRaw('EXTRACT(MONTH FROM created_at) as mois, SUM(montant) as total')
+    ->groupBy('mois')
+    ->orderBy('mois')
+    ->pluck('total', 'mois'); // [1 => 10000, 2 => 20000, ...]
+
+// Définir les libellés des mois (associatif)
+$moisLabels = collect([
+    1 => 'Janvier', 2 => 'Février', 3 => 'Mars', 4 => 'Avril',
+    5 => 'Mai', 6 => 'Juin', 7 => 'Juillet', 8 => 'Août',
+    9 => 'Septembre', 10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre',
+]);
+
+// Mapper les montants sur chaque mois (remplir les mois vides avec 0)
+$paiements = $moisLabels->map(fn($mois, $num) => $paiementsParMois[$num] ?? 0);
+
+return view('financier.dashboard', [
+    'moisLabels' => $moisLabels->values(), // juste les noms
+    'paiements' => $paiements->values(), // les montants correspondants
+    'nombreRessortissants' => $nombreRessortissants,
+    'nombrePaiements' => $nombrePaiements,
+]);
     }
 
     public function ressortissants()
@@ -286,5 +317,250 @@ class FinancierController extends Controller
         // Retourner un message de succès
         return redirect()->route('financier.ressortissants')->with('success', 'Ressortissant supprimé avec succès');
     }
+
     
+
+    //pour type cotisation
+
+    public function typecotisations()
+    {
+        // Récupère recupére les types de cotisations
+        $type_cotisations = DB::table('type_cotisations')
+        ->select(
+            'type_cotisations.*', // Toutes les infos du ressortissant
+        )
+        ->get();
+
+        return view('financier/typecotisations/index', compact('type_cotisations'));
+    }
+
+    public function addTypecotisation()
+    {
+        return view('financier/typecotisations/addTypecotisation');
+
+    }
+
+    public function getTypecotisation($id)
+    {
+        // Trouver le type  ou retourner une erreur 404
+        $type_cotisations = TypeCotisation::findOrFail($id);
+
+        // Fusionner les données du ressortissant et de l'utilisateur
+        $data = [
+            'id' => $type_cotisations->id,
+            'name' => $type_cotisations->name,
+            'description' => $type_cotisations->description,
+            'montant' => $type_cotisations->montant,
+            'formeJuridique' => $type_cotisations->formeJuridique,
+            
+        ];
+
+        return response()->json($data);
+    }
+
+
+    public function editTypecotisation($id)
+    {
+        // Trouver le type avec l'ID fourni
+        $type_cotisations = TypeCotisation::findOrFail($id);
+
+        return view('financier.typecotisations.editTypecotisation', compact('type_cotisations'));
+    }
+
+    public function storeType(Request $request)
+    {
+        // Validation des données
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'montant' => 'nullable|string|max:255',
+            'formeJuridique' => 'nullable|string|max:255',
+        ], [
+            'name.required' => 'Le champ nom est obligatoire.',
+            'montant.required' => 'Le champ montant est obligatoire.',
+            
+        ]);
+    
+        try {
+    
+            // Création du type
+            $type_cotisations = TypeCotisation::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'montant' => $request->montant,
+                'formeJuridique' => $request->formeJuridique,
+                
+            ]);
+    
+            return redirect()->route('financier.typecotisations')->with('success', 'Type de cotisation créé avec succès !');
+    
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Gestion d'erreur spécifique pour les erreurs de base de données
+            return redirect()->back()->with('error', 'Erreur de base de données : ' . $e->getMessage());
+        } catch (\Exception $e) {
+            // Gestion générale pour toutes les autres erreurs
+            return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'ajout du type de cotisation. Détails de l\'erreur : ' . $e->getMessage());
+        }
+    }
+    
+    public function updateType(Request $request, $id)
+    {
+        // Trouver le type avec son id, ou retourner une erreur 404 si non trouvé
+        $type_cotisations = TypeCotisation::findOrFail($id);
+
+        // Validation des données
+        $request->validate([
+           'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'montant' => 'nullable|string|max:255',
+            'formeJuridique' => 'nullable|string|max:255',
+        ], [
+            'name.required' => 'Le champ nom est obligatoire.',
+            'montant.required' => 'Le champ montant est obligatoire.',
+        ]);
+
+       
+        // Mise à jour des informations
+        $type_cotisations->update([
+            'name' => $request->name,
+                'description' => $request->description,
+                'montant' => $request->montant,
+                'formeJuridique' => $request->formeJuridique,
+        ]);
+
+        // Retourner un message de succès
+        return redirect()->route('financier.typecotisations')->with('success', 'Type de cotisation mis à jour avec succès');
+    }
+
+
+    public function destroyType($id) 
+    {
+        // Trouver le type avec l'ID fourni
+        $type_cotisations = TypeCotisation::findOrFail($id);
+
+        // Suppression du type
+        $type_cotisations->delete();
+
+        // Retourner un message de succès
+        return redirect()->route('financier.typecotisations')->with('success', 'Type cotisation supprimé avec succès');
+    }
+
+    //public function cotisations()
+    //{
+      //  $cotisations = Cotisation::with('typeCotisation')->paginate(10); // Fetch cotisations with type
+        //return view('financier.cotisations.index', compact('cotisations'));
+    //}
+
+    public function cotisations(Request $request)
+{
+    // Récupérer les valeurs des filtres depuis la requête
+    $secteur = $request->query('secteur');
+    $forme = $request->query('forme');
+
+    // Construire la requête pour les paiements
+    $query = Paiement::with(['ressortissant.utilisateur', 'typeCotisation']);
+
+
+    // Appliquer les filtres si présents
+    if ($secteur) {
+        $query->whereHas('ressortissant', function ($q) use ($secteur) {
+            $q->where('secteurActivite', $secteur);
+        });
+    }
+
+    if ($forme) {
+        $query->whereHas('ressortissant', function ($q) use ($forme) {
+            $q->where('formeJuridique', $forme);
+        });
+    }
+
+    // Ajouter la pagination (10 éléments par page)
+    $paiements = $query->orderBy('id', 'asc')->paginate(10);
+
+    // Récupérer les listes distinctes pour les menus déroulants
+    $secteurs = Ressortissant::select('secteurActivite')
+        ->distinct()
+        ->whereNotNull('secteurActivite')
+        ->pluck('secteurActivite');
+
+    $formes = Ressortissant::select('formeJuridique')
+        ->distinct()
+        ->whereNotNull('formeJuridique')
+        ->pluck('formeJuridique');
+
+    return view('financier.cotisations.index', compact('paiements', 'secteurs', 'formes', 'secteur', 'forme'));
+}
+
+    public function downloadPaymentsReport()
+    {
+        $ressortissants = Ressortissant::whereHas('paiements')
+            ->with(['paiements'])
+            ->orderBy('raisonSociale')
+            ->get();
+
+        $pdf = Pdf::loadView('financier.cotisations.rapportPdf', compact('ressortissants'));
+        return $pdf->download('rapport_paiements_' . now()->format('Ymd') . '.pdf');
+    }
+
+    public function exportExcel()
+{
+    $ressortissants = \App\Models\Ressortissant::whereHas('paiements')
+        ->with('paiements')
+        ->orderBy('raisonSociale')
+        ->get()
+        ->map(function ($ressortissant) {
+            return [
+                'Raison sociale' => $ressortissant->raisonSociale,
+                'RCCM' => $ressortissant->rccm,
+                'Forme juridique' => $ressortissant->formeJuridique,
+                'Secteur d activité ' => $ressortissant->secteurActivite,
+                'Nombre de paiements' => $ressortissant->paiements->count(),
+                'Total payé' => $ressortissant->paiements->sum('montant'),
+                'Dernier paiement' => optional($ressortissant->paiements->last())->created_at,
+            ];
+        });
+
+    $export = new class($ressortissants) implements \Maatwebsite\Excel\Concerns\FromCollection, \Maatwebsite\Excel\Concerns\WithHeadings {
+        private $data;
+
+        public function __construct($data)
+        {
+            $this->data = $data;
+        }
+
+        public function collection()
+        {
+            return collect($this->data);
+        }
+
+        public function headings(): array
+        {
+            return [
+                'Raison sociale',
+                'RCCM',
+                'Forme juridique',
+                'Secteur Activité',
+                'Nombre de paiements',
+                'Total payé',
+                'Dernier paiement',
+            ];
+        }
+    };
+
+    return Excel::download($export, 'rapport_paiements_' . now()->format('Ymd') . '.xlsx', ExcelFormat::XLSX);
+}
+
+public function dashboard()
+{
+    // Exemple : Récupérer les paiements par mois pour l'évolution des cotisations
+    $paiementsParMois = Paiement::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, SUM(montant) as total')
+        ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+        ->orderBy('year', 'desc')
+        ->orderBy('month', 'desc')
+        ->get();
+
+    // Passer les données à la vue
+    return view('dashboard', compact('paiementsParMois'));
+}
+
 }
