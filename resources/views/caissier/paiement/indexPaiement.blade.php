@@ -211,9 +211,7 @@
                 <h5 class="modal-title" id="paymentDetailsModalLabel">Détail Paiement</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="container">
-    <h3>Détail du paiement de {{ $paiement->ressortissant->raisonSociale }}</h3>
-
+            <div class="modal-body px-4">
     <dl class="row">
         <dt class="col-sm-4">Ressortissant</dt>
         <dd class="col-sm-8">{{ $paiement->ressortissant->raisonSociale ?? '—'  }}</dd>
@@ -236,11 +234,11 @@
         <dt class="col-sm-4">Référence</dt>
         <dd class="col-sm-8">{{ $paiement->reference }}</dd>
     </dl>
+    <a class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close" target="_blank">← Retour à la liste</a>
 
     <a href="{{ route('paiement.recu', $paiement->id) }}" class="btn btn-primary" target="_blank">
         Voir le reçu
     </a>
-    <a href="{{ route('caissier.paiement.indexPaiement') }}" class="btn btn-primary" target="_blank">← Retour à la liste</a>
 </div>
         </div>
     </div>

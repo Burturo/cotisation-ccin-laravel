@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h1 class="mt-5">Dashboard Admin</h1>
+<h1 style="margin-top: 50px;">Dashboard Admin</h1>
   
     <div class="container-fluid">
         

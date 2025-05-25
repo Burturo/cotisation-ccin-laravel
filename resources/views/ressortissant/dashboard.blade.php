@@ -111,7 +111,9 @@
                             <td>{{ $lettre->date_envoi ? $lettre->date_envoi->format('d/m/Y') : 'Non envoyée' }}
                             </td>
                             <td>
-                            <a href="{{ asset('storage/' . $lettre->file_path) }}" download>Télécharger le document</a>
+                            <a href="{{ asset('storage/' . $lettre->file_path) }}"  class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-download"></i>Télécharger le document
+                            </a>
 
                             </td>
                         </tr>

@@ -32,8 +32,9 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{{ asset('js/SidebarTest.js') }}" defer></script>
         <script src="{{ asset('js/bootstrap.min.js') }}" asp-append-version="true"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-        <script src="https://cdn.datatables.net/v/bs5/dt-2.2.2/datatables.min.js"></script>
+        <script src="{{ asset('js/bootstrap.bundle.min.js') }}" asp-append-version="true"></script>
+        <script src="{{ asset('js/datatables.min.js') }}" asp-append-version="true"></script>
+
         <script>
             $(document).ready(function () {
                 $('.table').DataTable();
@@ -45,7 +46,7 @@
 
 <!-- Modale pour afficher les informations du profil -->
 <div class="modal custom-modal fade" id="profileModal" data-bs-backdrop="static" data-bs-keyboard="false"  tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="profileModalLabel">Profil de l'utilisateur</h5>
@@ -88,7 +89,7 @@
                    
                     <!-- Champs spécifiques pour les ressortissants -->
                     @if(Auth::user()->role === 'ressortissant' && Auth::user()->ressortissant)
-                        <div id="ressortissantFields" class="row">
+                        <div id="ressortissantFields">
                             <div class="col-7 text-start">
                                 <div class="d-flex justify-content-between mb-3">
                                     <strong >Titre 1 :</strong> 

@@ -80,7 +80,6 @@ public function store(Request $request)
 
         \Log::info('Validation passée');
 
-
         // Option 1 : Créer une cotisation si nécessaire
         $cotisationData = [
             'type_cotisation_id' => $request->type_cotisation_id,

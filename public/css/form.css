@@ -217,7 +217,7 @@
   .content-step{
     height: 65vh;
     overflow-y: auto;
-    scrollbar-width: none;
+    scrollbar-width: auto;
     padding-top: 10px;
   }
   

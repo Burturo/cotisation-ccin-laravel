@@ -14,7 +14,7 @@
     </div>
 @endif
 
-<div class="container">
+<div class="modal custom-modal fade">
     <h1>Détail du paiement #{{ $paiement->id }}</h1>
 
     <dl class="row">

@@ -209,7 +209,7 @@
                 <h5 class="modal-title" id="paymentModalLabel">Enregistrer un paiement</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body px-4">
                 <form id="paymentForm" action="{{ route('caissier.paiement.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="ressortissant_id" id="ressortissant_id">
@@ -230,12 +230,12 @@
                             @endif
                         </select>
                     </div>
-                    <div>
+                    <div class="mb-3">
                         <label>Montant</label>
                         <input type="number" name="montant" class="form-control" required>
                     </div>
 
-                    <div>
+                    <div class="mb-3">
                         <label>Mode de paiement</label>
                         <select name="methode_paiement" class="form-select" required>
                         <option value="">-- Sélectionnez le mode de paiement --</option>
@@ -245,7 +245,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-success">Valider le paiement</button>
+                    <button type="submit" class="btn btn-success ">Valider le paiement</button>
                 </form>
             </div>
         </div>

@@ -179,15 +179,11 @@
                         <i class="fa fa-paper-plane sub-menu-i"></i> Enregistrement paiement
                     </a>
                 </li>
-               
-            </ul>
-            <ul class="sub-menu">
-                <li class="{{ request()->is('caissier/paiement') ? 'active' : '' }}">
+               <li class="{{ request()->is('paiement') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('caissier.paiement.indexPaiement') }}">
                         <i class="fa fa-paper-plane sub-menu-i"></i> Liste des paiements
                     </a>
                 </li>
-               
             </ul>
         </li>
         @endif

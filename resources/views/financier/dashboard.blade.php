@@ -87,7 +87,12 @@
                         </div>
                         <div class="col-md-4 col-12 mt-4 mt-md-0 card border-1 border-black shadow p-3 rounded">
                             <div class="card-body">
-                                <h5 class="card-title border-2 border-bottom border-black">Notifications</h4> <!-- Titre de la section de notifications. -->
+                                <h5 class="card-title border-2 border-bottom border-black">Notifications</h4> 
+                                @forelse ($notifications as $notification)
+                            <p>{{ $notification->message }} ({{ $notification->created_at->format('d/m/Y') }})</p>
+                        @empty
+                            <p>Aucune notification récente.</p>
+                        @endforelse<!-- Titre de la section de notifications. -->
                                 <div class="card-body">
                                     <h6 class="card-title"></h6> <!-- Titre de la carte. -->
                                     <p class="card-text"></p> <!-- Affiche le nombre de courriers non lus. -->

@@ -155,9 +155,11 @@
     }
 </style>
 
-<h2>Liste des ressortissants à jours</h2>
+<div class="container-fluid" style="margin-top: 45px;">
+  <div class="card p-3 card-table">
+    <h2>Liste des ressortissants à jours</h2>
 
-<form method="GET" action="{{ route('financier.cotisations') }}" class="mb-4">
+    <form method="GET" action="{{ route('financier.cotisations') }}" class="mb-4">
         <div class="row">
             <div class="col-md-4">
                 <label for="secteur">Secteur d'activité :</label>
@@ -178,8 +180,8 @@
                 </select>
             </div>
             <div class="col-md-4 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary">Filtrer</button>
-                <a type="button" href="{{ route('financier.cotisations') }}" class="btn btn-add ml-2">Réinitialiser</a>
+                <button type="submit" class="btn btn-add" style="width:150px;background:#045e9e">Filtrer</button>
+                <a type="button" href="{{ route('financier.cotisations') }}" class="btn btn-add ml-2" style="width:150px">Réinitialiser</a>
             </div>
         </div>
         <div class="mt-3">
@@ -189,40 +191,40 @@
         </div>
     </form>
 
-<table id="attribution-sold-datatable" class="display table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Ressortissant</th>
-            <th>Rccm</th>
-            <th>Secteur d'Activité</th>
-            <th>Forme Juridique</th>
-            <th>Type Cotisation</th>
-            <th>Montant</th>
-            <th>Date de paiement</th>
-            <th>Référence du Reçu</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($paiements as $key => $paiement)
+    <table id="attribution-sold-datatable" class="display table">
+        <thead>
             <tr>
-                <td>#{{ $key + 1 }}</td>
-                <td>{{ $paiement->ressortissant ? $paiement->ressortissant->raisonSociale : 'N/A' }}</td>
-                <td>{{ $paiement->ressortissant ? $paiement->ressortissant->rccm : 'N/A' }}</td>
-                <td>{{ $paiement->ressortissant ? $paiement->ressortissant->secteurActivite : 'N/A' }}</td>
-                <td>{{ $paiement->ressortissant ? $paiement->ressortissant->formeJuridique : 'N/A' }}</td>
-                <td>{{ $paiement->cotisation && $paiement->cotisation->typeCotisation ? $paiement->cotisation->typeCotisation->name : '—' }}</td>
-                <td>{{ number_format($paiement->montant, 0, ',', ' ') }} FCFA</td>
-                <td>{{ $paiement->date_paiement->format('d/m/Y') }}</td>
-                <td>{{ $paiement->reference }}  <a href="{{ route('paiement.recu', $paiement->id) }}" class="btn btn-sm btn-secondary" target="_blank">Voir le reçu</a></td>
+                <th>ID</th>
+                <th>Ressortissant</th>
+                <th>Rccm</th>
+                <th>Secteur d'Activité</th>
+                <th>Forme Juridique</th>
+                <th>Type Cotisation</th>
+                <th>Montant</th>
+                <th>Date de paiement</th>
+                <th>Référence du Reçu</th>
                 
             </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach ($paiements as $key => $paiement)
+                <tr>
+                    <td>#{{ $key + 1 }}</td>
+                    <td>{{ $paiement->ressortissant ? $paiement->ressortissant->raisonSociale : 'N/A' }}</td>
+                    <td>{{ $paiement->ressortissant ? $paiement->ressortissant->rccm : 'N/A' }}</td>
+                    <td>{{ $paiement->ressortissant ? $paiement->ressortissant->secteurActivite : 'N/A' }}</td>
+                    <td>{{ $paiement->ressortissant ? $paiement->ressortissant->formeJuridique : 'N/A' }}</td>
+                    <td>{{ $paiement->cotisation && $paiement->cotisation->typeCotisation ? $paiement->cotisation->typeCotisation->name : '—' }}</td>
+                    <td>{{ number_format($paiement->montant, 0, ',', ' ') }} FCFA</td>
+                    <td>{{ $paiement->date_paiement->format('d/m/Y') }}</td>
+                    <td>{{ $paiement->reference }}  <a href="{{ route('paiement.recu', $paiement->id) }}" class="btn btn-sm btn-secondary" target="_blank">Voir le reçu</a></td>
+                    
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
     </div>
-    </div>
+</div>
         
 </div>
 

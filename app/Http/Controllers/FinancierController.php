@@ -8,6 +8,7 @@ use App\Models\Ressortissant;
 use App\Models\TypeCotisation;
 use App\Models\Cotisation;
 use App\Models\Paiement;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -34,7 +35,13 @@ $moisLabels = collect([
     1 => 'Janvier', 2 => 'Février', 3 => 'Mars', 4 => 'Avril',
     5 => 'Mai', 6 => 'Juin', 7 => 'Juillet', 8 => 'Août',
     9 => 'Septembre', 10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre',
+
 ]);
+
+    $notifications = Notification::where('created_at', '>=', now()->subDays(7))
+->orderBy('created_at', 'desc')
+->take(5)
+->get();
 
 // Mapper les montants sur chaque mois (remplir les mois vides avec 0)
 $paiements = $moisLabels->map(fn($mois, $num) => $paiementsParMois[$num] ?? 0);
@@ -44,6 +51,7 @@ return view('financier.dashboard', [
     'paiements' => $paiements->values(), // les montants correspondants
     'nombreRessortissants' => $nombreRessortissants,
     'nombrePaiements' => $nombrePaiements,
+     'notifications'=>$notifications
 ]);
     }
 
