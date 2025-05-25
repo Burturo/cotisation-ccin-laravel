@@ -14,12 +14,15 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Tableau de Bord - {{ $ressortissant->raisonSociale }}</h1>
+    
+<div class="container-fluid card mt-5 p-4">
+    <h5>Dashboard {{ $ressortissant->raisonSociale }}</h5>
+    <div class="scroolAsignSubj h-100 px-4 haut-rendbody">
+       
 
         <!-- Contribution Status -->
         
-        <div class="card shadow mb-4">
+        <div class="card shadow mb-4 p-4">
         
             <div class="card-header ">
             <h6>Statut des Cotisations</h6>
@@ -30,12 +33,11 @@
         </div>
 
         <!-- Payment History -->
-        <div class="card shadow mb-4">
+        <div class="card shadow mb-4 p-4">
         <div class="card-header bg-primary text-white">Historique des Paiements</div>
             <body class="bg-gray-100 font-sans">
     <div class="container mx-auto p-6">
         @include('partials.sidebar')
-        <h4 class="text-3xl font-bold text-gray-800 mb-6">Mes Paiements</h4>
         @if (session('success'))
             <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
                 {{ session('success') }}
@@ -88,8 +90,8 @@
         </div>
 
         <!-- Documents -->
-        <div class="card shadow">
-        <div class="card-header bg-secondary text-white">Documents Reçus</div>
+        <div class="card shadow mb-4 p-4">
+        <div class="card-header bg-secondary text-white ">Documents Reçus</div>
             <div class="card-body">
                 @if ($lettres->isEmpty())
                     <p>Aucun document reçu.</p>

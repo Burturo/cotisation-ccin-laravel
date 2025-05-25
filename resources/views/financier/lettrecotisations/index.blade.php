@@ -163,7 +163,7 @@
       
     </div>
     <div class="table-container px-2">
-    <h1>Documents Envoyés</h1>
+    
     <a href="{{ route('financier.lettrecotisations.create') }}" class="btn btn-primary mb-3">Nouveau Document</a>
     <table id="attribution-sold-datatable" class="display table ">
             <thead>

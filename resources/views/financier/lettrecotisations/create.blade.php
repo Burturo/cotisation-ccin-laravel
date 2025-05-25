@@ -154,8 +154,9 @@
          text-align: left !important;
     }
 </style>
-<div class="container mt-5">
-    <h1>Envoyer une Lettre</h1>
+<div class="container-fluid card mt-5 p-4">
+    <h5>Envoyer une lettre</h5>
+    <div class="scroolAsignSubj h-100 px-4 haut-rendbody">
     @if(session('success'))
     <div class="alert alert-success">
         {{ session('success') }}

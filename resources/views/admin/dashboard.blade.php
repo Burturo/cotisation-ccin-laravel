@@ -4,15 +4,14 @@
 
 @section('content')
 
-<h1 style="margin-top: 50px;">Dashboard Admin</h1>
-  
-    <div class="container-fluid">
-        
+<div class="container-fluid card mt-5 p-4">
+    <h5>Dashboard Admin</h5>
+    <div class="scroolAsignSubj h-100 px-4 haut-rendbody">
                    
             <div class="scroolAsignSubj h-100 px-4 pt-5 haut-rendbody">
                 <div class="d-flex flex-column py-2 px-4 my-md-4 my-3 " style="height: 90vh;">
                     <div class="d-flex flex-md-row flex-column justify-content-between mb-md-5 mb-0 ">
-                        <div class="col-md-4 col-12 mb-4 mb-md-0 card border-1 border-black shadow p-3 rounded">
+                        <div class="col-md-4 col-12 mb-4 mb-md-0  me-md-3 me-0 card border-1 border-black shadow p-3 rounded">
                             <div class="card-body">
                                 <h5 class="card-title">Nombre d' utilisateurs</h4>
                                 <div class="text-center text-4xl font-semibold text-blue-600">
@@ -20,7 +19,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-12 mb-4 mb-md-0 card border-1 border-black shadow p-3 rounded">
+                        <div class="col-md-4 col-12 mb-4 mb-md-0  me-md-3 me-0 card border-1 border-black shadow p-3 rounded">
                             <div class="card-body">
                                 <h5 class="card-title">Nombre de Ressortissants</h4>
                                 <p class="text-2xl font-bold text-pink-600">{{ $nombreRessortissants }}</p>
@@ -28,7 +27,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-12 mb-4 mb-md-0 card border-1 border-black shadow p-3 rounded">
+                        <div class="col-md-4 col-12 mb-4 mb-md-0  me-md-3 me-0 card border-1 border-black shadow p-3 rounded">
                             <div class="card-body">
                                 <h5 class="card-title">Nombre de cotisation payé</h4>
                                 <p class="text-2xl font-bold text-pink-600">{{ $nombrePaiements }}</p>

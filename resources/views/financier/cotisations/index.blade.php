@@ -157,7 +157,7 @@
 
 <div class="container-fluid" style="margin-top: 45px;">
   <div class="card p-3 card-table">
-    <h2>Liste des ressortissants à jours</h2>
+    <h4>Liste des ressortissants à jours</h4>
 
     <form method="GET" action="{{ route('financier.cotisations') }}" class="mb-4">
         <div class="row">
@@ -185,8 +185,8 @@
             </div>
         </div>
         <div class="mt-3">
-        <a  type="button" href="{{ route('financier.cotisations.rapportPdf') }}" class="btn btn-primary" target="_blank">Exporter par PDF le rapport des ressortissants à jour</a>
-        <a type="button" href="{{ route('financier.export.excel') }}" class="btn btn-primary" target="_blank">Exporter par Excel le rapport des ressortissants à jour</a>
+        <a  type="button" href="{{ route('financier.cotisations.rapportPdf') }}" class="btn btn-primary" target="_blank" style="width:400px">Exporter par PDF le rapport des ressortissants à jour</a>
+        <a type="button" href="{{ route('financier.export.excel') }}" class="btn btn-primary" target="_blank" style="width:400px">Exporter par Excel le rapport des ressortissants à jour</a>
 
         </div>
     </form>
